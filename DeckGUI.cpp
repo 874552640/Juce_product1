@@ -50,7 +50,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     volumeKnob.setRange(0.0, 1.0, 0.01);
     speedKnob.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     speedKnob.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
-    speedKnob.setRange(-1.0, 1.0, 0.01);
+    speedKnob.setRange(0.1, 3.0, 0.1);
     posSlider.setRange(0.0, 1.0);
 
     startTimer(500);
