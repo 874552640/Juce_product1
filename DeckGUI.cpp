@@ -204,11 +204,18 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y)
 
 void DeckGUI::timerCallback()
 {
-    //std::cout << "DeckGUI::timerCallback" << std::endl;
-    waveformDisplay.setPositionRelative(
-            player->getPositionRelative());
+
+    if (player->isPlaying())
+        {
+            // 获取当前播放位置（百分比）
+            double position = player->getPositionRelative();
+            // 根据播放位置设置 waveformDisplay 的值
+            waveformDisplay.setPositionRelative(position);
+            posSlider.setValue(position, dontSendNotification);
+        }
 }
 
 
-    
+
+
 
