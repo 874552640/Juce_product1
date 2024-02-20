@@ -90,9 +90,9 @@ void DeckGUI::resized()
     playButton.setBounds(0, 0, getWidth(), rowH);
     stopButton.setBounds(0, rowH, getWidth(), rowH);  
     recordButton.setBounds(getWidth()/2, rowH * 7, getWidth() / 2, rowH);
-    volumeKnob.setBounds(-80, rowH * 2.3, getWidth(), rowH *1.5);
+    volumeKnob.setBounds(0, rowH * 2.3, getWidth()/2, rowH *1.5);
     volumeLabel.setBounds(0, rowH * 3.8, getWidth()/2, 20);
-    speedKnob.setBounds(80, rowH * 2.3, getWidth(), rowH*1.5);
+    speedKnob.setBounds(getWidth()/2, rowH * 2.3, getWidth()/2, rowH*1.5);
     speedLabel.setBounds(165, rowH * 3.8, getWidth()/2, 20);
     posSlider.setBounds(0, rowH * 4, getWidth(), rowH);
     waveformDisplay.setBounds(0, rowH * 5, getWidth(), rowH * 2);
