@@ -15,8 +15,10 @@
 DeckGUI::DeckGUI(DJAudioPlayer* _player, 
                 AudioFormatManager & 	formatManagerToUse,
                 AudioThumbnailCache & 	cacheToUse
+                
+                 
            ) : player(_player), 
-               waveformDisplay(formatManagerToUse, cacheToUse)
+               waveformDisplay(formatManagerToUse, cacheToUse),transportSource()
 {
     volumeLabel.setText("Volume: 0", dontSendNotification);
     speedLabel.setText("1 x", dontSendNotification);
@@ -51,7 +53,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     speedKnob.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     speedKnob.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     speedKnob.setRange(0.1, 3.0, 0.1);
-    posSlider.setRange(0.0, 1.0);
+    
+    
+//    posSlider.setRange(0.0, 1.0);
 
     startTimer(500);
     
@@ -123,7 +127,7 @@ void DeckGUI::buttonClicked(Button* button)
      if (button == &stopButton)
     {
         
-        player->setPosition(0);
+//        player->setPosition(0);
         player->start();
 
     }
@@ -133,9 +137,19 @@ void DeckGUI::buttonClicked(Button* button)
         FileBrowserComponent::canSelectFiles;
         fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
         {
+            File fileSelected = chooser.getResult();
             player->loadURL(URL{chooser.getResult()});
             // and now the waveformDisplay as well
-            waveformDisplay.loadURL(URL{chooser.getResult()}); 
+            waveformDisplay.loadURL(URL{chooser.getResult()});
+            
+            formatManager.registerBasicFormats();
+
+            AudioFormatReader* reader = formatManager.createReaderFor(fileSelected);
+            if (reader != nullptr)
+            {
+                totalLength = reader->lengthInSamples / reader->sampleRate;
+                posSlider.setRange(0.0, totalLength,0.1);
+            }
         });
     }
     // if (button == &loadButton)
@@ -182,7 +196,7 @@ void DeckGUI::sliderValueChanged (Slider *slider)
     
     if (slider == &posSlider)
     {
-        player->setPositionRelative(slider->getValue());
+        player->setPositionRelative(slider->getValue()/totalLength);
     }
     
 }
@@ -211,7 +225,7 @@ void DeckGUI::timerCallback()
             double position = player->getPositionRelative();
             // 根据播放位置设置 waveformDisplay 的值
             waveformDisplay.setPositionRelative(position);
-            posSlider.setValue(position, dontSendNotification);
+            posSlider.setValue(position*totalLength, dontSendNotification);
         }
 }
 
