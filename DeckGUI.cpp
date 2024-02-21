@@ -213,6 +213,7 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y)
   if (files.size() == 1)
   {
     player->loadURL(URL{File{files[0]}});
+    waveformDisplay.loadURL(URL{File{files[0]}});
   }
 }
 
