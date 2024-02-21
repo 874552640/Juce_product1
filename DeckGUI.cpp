@@ -20,6 +20,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
            ) : player(_player), 
                waveformDisplay(formatManagerToUse, cacheToUse),transportSource()
 {
+    formatManager.registerBasicFormats();
     volumeLabel.setText("Volume: 0", dontSendNotification);
     speedLabel.setText("1 x", dontSendNotification);
 
@@ -137,14 +138,30 @@ void DeckGUI::buttonClicked(Button* button)
         FileBrowserComponent::canSelectFiles;
         fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
         {
+            
             File fileSelected = chooser.getResult();
             player->loadURL(URL{chooser.getResult()});
             // and now the waveformDisplay as well
             waveformDisplay.loadURL(URL{chooser.getResult()});
             
-            formatManager.registerBasicFormats();
+//            formatManager.registerBasicFormats();
 
             AudioFormatReader* reader = formatManager.createReaderFor(fileSelected);
+//            AudioFormatReader* reader = nullptr;
+//            int num=formatManager.getNumKnownFormats();
+//            for (int i=0;i<num;i++){
+//                if (af->getFormatName() == formatManager.getFormatNameForFileExtension(fileSelected.getFileExtension()))
+//                {
+//                    reader = formatManager.createReaderFor(fileSelected);
+//                    break;
+//                }
+//            }
+//
+//            if (reader == nullptr){
+//                reader = formatManager.createReaderFor(fileSelected);
+//            }
+            
+            
             if (reader != nullptr)
             {
                 totalLength = reader->lengthInSamples / reader->sampleRate;
