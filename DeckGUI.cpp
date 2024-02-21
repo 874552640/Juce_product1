@@ -127,8 +127,8 @@ void DeckGUI::buttonClicked(Button* button)
      if (button == &stopButton)
     {
         
-//        player->setPosition(0);
-        player->start();
+        player->setPosition(0);
+
 
     }
        if (button == &loadButton)
