@@ -163,6 +163,16 @@ void DeckGUI::buttonClicked(Button* button)
                 totalLength = reader->lengthInSamples / reader->sampleRate;
                 posSlider.setRange(0.0, totalLength,0.1);
             }
+            
+            nameLabel.setText(fileSelected.getFileName(), dontSendNotification);
+            const Font& font=nameLabel.getFont();
+            int textWidth = font.getStringWidth(fileSelected.getFileName());
+            
+            Rectangle<int> labelBounds = nameLabel.getBounds();
+            labelBounds.setX((getWidth()-textWidth)/2);
+            
+            nameLabel.setBounds(labelBounds);
+            
         });
     }
     // if (button == &loadButton)
