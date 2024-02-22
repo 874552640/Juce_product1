@@ -147,19 +147,7 @@ void DeckGUI::buttonClicked(Button* button)
 //            formatManager.registerBasicFormats();
 
             AudioFormatReader* reader = formatManager.createReaderFor(fileSelected);
-//            AudioFormatReader* reader = nullptr;
-//            int num=formatManager.getNumKnownFormats();
-//            for (int i=0;i<num;i++){
-//                if (af->getFormatName() == formatManager.getFormatNameForFileExtension(fileSelected.getFileExtension()))
-//                {
-//                    reader = formatManager.createReaderFor(fileSelected);
-//                    break;
-//                }
-//            }
-//
-//            if (reader == nullptr){
-//                reader = formatManager.createReaderFor(fileSelected);
-//            }
+
             
             
             if (reader != nullptr)
@@ -231,6 +219,9 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y)
   {
     player->loadURL(URL{File{files[0]}});
     waveformDisplay.loadURL(URL{File{files[0]}});
+    AudioFormatReader* reader = formatManager.createReaderFor(files[0]);
+      totalLength = reader->lengthInSamples / reader->sampleRate;
+      posSlider.setRange(0.0, totalLength,0.1);
   }
 }
 

@@ -16,7 +16,7 @@ PlaylistComponent::PlaylistComponent()
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-    trackTitles.push_back("Track 1");
+//    trackTitles.push_back("Track 1");
 //    trackTitles.push_back("Track 2");
 //    trackTitles.push_back("Track 3");
 //    trackTitles.push_back("Track 4");
