@@ -17,32 +17,32 @@ PlaylistComponent::PlaylistComponent()
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
     trackTitles.push_back("Track 1");
-    trackTitles.push_back("Track 2");
-    trackTitles.push_back("Track 3");
-    trackTitles.push_back("Track 4");
-    trackTitles.push_back("Track 5");
-    trackTitles.push_back("Track 6");
-    trackTitles.push_back("Track 7");
-    trackTitles.push_back("Track 8");
-    trackTitles.push_back("Track 9");
-    trackTitles.push_back("Track 10");
-    trackTitles.push_back("Track 11");
-    trackTitles.push_back("Track 12");
-    trackTitles.push_back("Track 13");
-    trackTitles.push_back("Track 14");
-    trackTitles.push_back("Track 15");
-    trackTitles.push_back("Track 16");
-    trackTitles.push_back("Track 17");
-    trackTitles.push_back("Track 18");
-    trackTitles.push_back("Track 19");
-    trackTitles.push_back("Track 20"); 
-    trackTitles.push_back("Track 21");
-    trackTitles.push_back("Track 22");
-    trackTitles.push_back("Track 23");
-    trackTitles.push_back("Track 24");
-    trackTitles.push_back("Track 25");
-    trackTitles.push_back("Track 26");
-    
+//    trackTitles.push_back("Track 2");
+//    trackTitles.push_back("Track 3");
+//    trackTitles.push_back("Track 4");
+//    trackTitles.push_back("Track 5");
+//    trackTitles.push_back("Track 6");
+//    trackTitles.push_back("Track 7");
+//    trackTitles.push_back("Track 8");
+//    trackTitles.push_back("Track 9");
+//    trackTitles.push_back("Track 10");
+//    trackTitles.push_back("Track 11");
+//    trackTitles.push_back("Track 12");
+//    trackTitles.push_back("Track 13");
+//    trackTitles.push_back("Track 14");
+//    trackTitles.push_back("Track 15");
+//    trackTitles.push_back("Track 16");
+//    trackTitles.push_back("Track 17");
+//    trackTitles.push_back("Track 18");
+//    trackTitles.push_back("Track 19");
+//    trackTitles.push_back("Track 20");
+//    trackTitles.push_back("Track 21");
+//    trackTitles.push_back("Track 22");
+//    trackTitles.push_back("Track 23");
+//    trackTitles.push_back("Track 24");
+//    trackTitles.push_back("Track 25");
+//    trackTitles.push_back("Track 26");
+//
 
     tableComponent.getHeader().addColumn("Track title", 1, 150);
     tableComponent.getHeader().addColumn("Play", 2, 115);
@@ -133,6 +133,15 @@ void PlaylistComponent::filesDropped (const StringArray &files, int x, int y)
 //    player->loadURL(URL{File{files[0]}});
       File droppedFile(files[0]);
       String fileName = droppedFile.getFileName();
-      std::cout << "Dropped file name: " << fileName << std::endl;
+//      std::cout << "Dropped file name: " << fileName << std::endl;
+      
+      addTrackToList(trackTitles,fileName);
   }
+}
+
+
+void PlaylistComponent::addTrackToList(std::vector<std::string> &trackTitles,const String &fileName)
+{
+    trackTitles.push_back(fileName.toStdString());
+    std::cout << "Dropped file name: " << fileName << std::endl;
 }
