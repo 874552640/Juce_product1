@@ -140,8 +140,9 @@ void PlaylistComponent::filesDropped (const StringArray &files, int x, int y)
 }
 
 
-void PlaylistComponent::addTrackToList(std::vector<std::string> &trackTitles,const String &fileName)
+void PlaylistComponent::addTrackToList(std::vector<String> &trackTitles,const String &fileName)
 {
-    trackTitles.push_back(fileName.toStdString());
+    trackTitles.push_back(fileName);
     std::cout << "Dropped file name: " << fileName << std::endl;
+    tableComponent.updateContent();
 }

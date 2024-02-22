@@ -30,12 +30,12 @@ public:
     void paintRowBackground(Graphics& g, int rowNumber, int width, int height, bool rowIsSelected) override;
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 
-    void addTrackToList(std::vector<std::string> &trackTitles,const String &fileName);
+    void addTrackToList(std::vector<String> &trackTitles,const juce::String &fileName);
     Component* refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) override;
 
 private:
     TableListBox tableComponent;
-    std::vector<std::string> trackTitles;
+    std::vector<String> trackTitles;
     bool isInterestedInFileDrag(const StringArray &file) override;
     void filesDropped (const StringArray &files, int x, int y) override;
     
