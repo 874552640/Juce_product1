@@ -56,6 +56,7 @@ private:
 
     Label volumeLabel;
     Label speedLabel;
+    Label nameLabel;
 
     FileChooser fChooser{"Select a file..."};
 

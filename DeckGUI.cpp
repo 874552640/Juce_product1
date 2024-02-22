@@ -23,6 +23,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     formatManager.registerBasicFormats();
     volumeLabel.setText("Volume: 0", dontSendNotification);
     speedLabel.setText("1 x", dontSendNotification);
+    
+    nameLabel.setText("test test test",dontSendNotification);
+    addAndMakeVisible(nameLabel);
 
     addAndMakeVisible(volumeLabel);
     addAndMakeVisible(speedLabel);
@@ -30,6 +33,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(stopButton);
     addAndMakeVisible(loadButton);
     addAndMakeVisible(recordButton);
+    
+    
        
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(speedKnob);
@@ -103,6 +108,9 @@ void DeckGUI::resized()
     waveformDisplay.setBounds(0, rowH * 5, getWidth(), rowH * 2);
     loadButton.setBounds(0, rowH * 7, getWidth()/2, rowH);
 
+    const Font& font=nameLabel.getFont();
+    int textWidth = font.getStringWidth("test test test");
+    nameLabel.setBounds((getWidth()-textWidth)/2, rowH * 2.1, getWidth(), 20);
 }
 
 void DeckGUI::buttonClicked(Button* button)
