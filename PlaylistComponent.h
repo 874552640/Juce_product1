@@ -16,7 +16,7 @@
 //==============================================================================
 /*
 */
-class PlaylistComponent  : public juce::Component, public TableListBoxModel, public Button::Listener
+class PlaylistComponent  : public juce::Component, public TableListBoxModel, public Button::Listener,public FileDragAndDropTarget
 {
 public:
     PlaylistComponent();
@@ -35,6 +35,8 @@ public:
 private:
     TableListBox tableComponent;
     std::vector<std::string> trackTitles;
+    bool isInterestedInFileDrag(const StringArray &file) override;
+    void filesDropped (const StringArray &files, int x, int y) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 };

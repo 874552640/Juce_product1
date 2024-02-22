@@ -118,3 +118,21 @@ Component* PlaylistComponent::refreshComponentForCell(int rowNumber, int columnI
     }
     return existingComponentToUpdate;
 }
+bool PlaylistComponent::isInterestedInFileDrag (const StringArray &files)
+{
+  std::cout << "isInterestedInFileDrag" << std::endl;
+  return true;
+}
+
+void PlaylistComponent::filesDropped (const StringArray &files, int x, int y)
+{
+  std::cout << "filesDropped" << std::endl;
+  if (files.size() == 1)
+  {
+      
+//    player->loadURL(URL{File{files[0]}});
+      File droppedFile(files[0]);
+      String fileName = droppedFile.getFileName();
+      std::cout << "Dropped file name: " << fileName << std::endl;
+  }
+}
