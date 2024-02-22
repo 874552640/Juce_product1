@@ -24,7 +24,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     volumeLabel.setText("Volume: 0", dontSendNotification);
     speedLabel.setText("1 x", dontSendNotification);
     
-    nameLabel.setText("test test test",dontSendNotification);
+    nameLabel.setText("SONG NAME",dontSendNotification);
     addAndMakeVisible(nameLabel);
 
     addAndMakeVisible(volumeLabel);
@@ -109,7 +109,7 @@ void DeckGUI::resized()
     loadButton.setBounds(0, rowH * 7, getWidth()/2, rowH);
 
     const Font& font=nameLabel.getFont();
-    int textWidth = font.getStringWidth("test test test");
+    int textWidth = font.getStringWidth("SONG NAME");
     nameLabel.setBounds((getWidth()-textWidth)/2, rowH * 2.1, getWidth(), 20);
 }
 
@@ -230,6 +230,16 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y)
     AudioFormatReader* reader = formatManager.createReaderFor(files[0]);
       totalLength = reader->lengthInSamples / reader->sampleRate;
       posSlider.setRange(0.0, totalLength,0.1);
+      File file(files[0]);
+      nameLabel.setText(file.getFileName(), dontSendNotification);
+      const Font& font=nameLabel.getFont();
+      int textWidth = font.getStringWidth(file.getFileName());
+      
+      Rectangle<int> labelBounds = nameLabel.getBounds();
+      labelBounds.setX((getWidth()-textWidth)/2);
+      
+      nameLabel.setBounds(labelBounds);
+      
   }
 }
 
