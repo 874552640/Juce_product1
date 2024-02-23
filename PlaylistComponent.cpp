@@ -107,15 +107,20 @@ void PlaylistComponent::buttonClicked(Button* button) {
     std::cout << "URL:" << URL{trackVector[id].file}.toString(false) << std::endl;
         
 
-    player->loadURL(URL{trackVector[id].file});
-    
+    if (player->isPlaying()) {
+            // 停止播放器
+            player->stop();
+           
+            // 设置按钮文本为 "Play"
+            button->setButtonText("Play");
+        } else {
+            // 如果播放器没有播放，则开始播放
+            player->loadURL(URL{trackVector[id].file});
+            player->start();
 
-    
-    player->start();
-    
-//    player->loadURL(URL{trackVector[id].file});
-//
-//    player->start();
+            // 设置按钮文本为 "Stop"
+            button->setButtonText("Stop");
+        }
 }
 
 Component* PlaylistComponent::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) {
