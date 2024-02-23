@@ -47,11 +47,13 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 {
     player1.prepareToPlay(samplesPerBlockExpected, sampleRate);
     player2.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    playlist_player.prepareToPlay(samplesPerBlockExpected, sampleRate);
     
     mixerSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
 
     mixerSource.addInputSource(&player1, false);
     mixerSource.addInputSource(&player2, false);
+    mixerSource.addInputSource(&playlist_player, false);
 
  }
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
@@ -67,6 +69,9 @@ void MainComponent::releaseResources()
     // For more details, see the help for AudioProcessor::releaseResources()
     player1.releaseResources();
     player2.releaseResources();
+    
+    playlist_player.releaseResources();
+    
     mixerSource.releaseResources();
 }
 

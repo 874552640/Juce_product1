@@ -50,7 +50,10 @@ private:
 
     MixerAudioSource mixerSource; 
 
-    PlaylistComponent playlistComponent;
+    DJAudioPlayer playlist_player{formatManager};
+    PlaylistComponent playlistComponent{&playlist_player, formatManager};
+    
+    
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

@@ -12,8 +12,9 @@
 #include "PlaylistComponent.h"
 
 //==============================================================================
-PlaylistComponent::PlaylistComponent()
+PlaylistComponent::PlaylistComponent(DJAudioPlayer* _player,AudioFormatManager &  formatManager): player(_player)
 {
+//    formatManager.registerBasicFormats();
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 //    trackTitles.push_back("Track 1");
@@ -103,6 +104,18 @@ void PlaylistComponent::paintCell(Graphics& g, int rowNumber, int columnId, int 
 void PlaylistComponent::buttonClicked(Button* button) {
     int id = std::stoi(button->getComponentID().toStdString());
     std::cout << "PlaylistComponent::buttonClicked trackTitles id: " << trackTitles[id] << std::endl;
+    std::cout << "URL:" << URL{trackVector[id].file}.toString(false) << std::endl;
+        
+
+    player->loadURL(URL{trackVector[id].file});
+    
+
+    
+    player->start();
+    
+//    player->loadURL(URL{trackVector[id].file});
+//
+//    player->start();
 }
 
 Component* PlaylistComponent::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) {
@@ -134,15 +147,22 @@ void PlaylistComponent::filesDropped (const StringArray &files, int x, int y)
       File droppedFile(files[0]);
       String fileName = droppedFile.getFileName();
 //      std::cout << "Dropped file name: " << fileName << std::endl;
-      
-      addTrackToList(trackTitles,fileName);
+      String path=droppedFile.getFullPathName();
+      std::cout << "Dropped file path: " << path << std::endl;
+      addTrackToList(trackTitles,fileName,droppedFile);
   }
 }
 
 
-void PlaylistComponent::addTrackToList(std::vector<String> &trackTitles,const String &fileName)
+void PlaylistComponent::addTrackToList(std::vector<String> &trackTitles,const String &fileName,const File &file)
 {
     trackTitles.push_back(fileName);
     std::cout << "Dropped file name: " << fileName << std::endl;
+    
+    TrackInfo newTrackInfo;
+    newTrackInfo.title = fileName;
+    newTrackInfo.file=file;
+    trackVector.push_back(newTrackInfo);
+    
     tableComponent.updateContent();
 }

@@ -13,13 +13,14 @@
 #include <JuceHeader.h>
 #include <vector>
 #include <string>
+#include "DJAudioPlayer.h"
 //==============================================================================
 /*
 */
 class PlaylistComponent  : public juce::Component, public TableListBoxModel, public Button::Listener,public FileDragAndDropTarget
 {
 public:
-    PlaylistComponent();
+    PlaylistComponent(DJAudioPlayer* player,AudioFormatManager &formatManager);
     ~PlaylistComponent() override;
 
     void paint (juce::Graphics&) override;
@@ -30,20 +31,24 @@ public:
     void paintRowBackground(Graphics& g, int rowNumber, int width, int height, bool rowIsSelected) override;
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 
-    void addTrackToList(std::vector<String> &trackTitles,const juce::String &fileName);
+    void addTrackToList(std::vector<String> &trackTitles,const juce::String &fileName,const File &file);
     Component* refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) override;
 
 private:
-    TableListBox tableComponent;
-    std::vector<String> trackTitles;
-    bool isInterestedInFileDrag(const StringArray &file) override;
-    void filesDropped (const StringArray &files, int x, int y) override;
-    
     struct TrackInfo
         {
             String title;
-            String filePath;
+            File file;
         };
+    TableListBox tableComponent;
+    std::vector<String> trackTitles;
+    std::vector<TrackInfo> trackVector;
+    bool isInterestedInFileDrag(const StringArray &file) override;
+    void filesDropped (const StringArray &files, int x, int y) override;
+    
+    AudioFormatManager formatManager;
+
+    DJAudioPlayer* player;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 };
