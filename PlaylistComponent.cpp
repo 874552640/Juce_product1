@@ -50,6 +50,11 @@ PlaylistComponent::PlaylistComponent(DJAudioPlayer* _player,AudioFormatManager &
     tableComponent.setModel(this);
 
     addAndMakeVisible(tableComponent);
+    
+    
+    addAndMakeVisible(playSequenceButton);
+    playSequenceButton.setButtonText("Play Sequence");
+    playSequenceButton.addListener(this);
 }
 
 
@@ -82,6 +87,7 @@ void PlaylistComponent::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
     tableComponent.setBounds(0, 0, getWidth(), getHeight());
+    playSequenceButton.setBounds(0, getHeight()-30, getWidth(), 30);
 }
 
 int PlaylistComponent::getNumRows() {
@@ -102,25 +108,43 @@ void PlaylistComponent::paintCell(Graphics& g, int rowNumber, int columnId, int 
 }
 
 void PlaylistComponent::buttonClicked(Button* button) {
-    int id = std::stoi(button->getComponentID().toStdString());
-    std::cout << "PlaylistComponent::buttonClicked trackTitles id: " << trackTitles[id] << std::endl;
-    std::cout << "URL:" << URL{trackVector[id].file}.toString(false) << std::endl;
+//    int id = std::stoi(button->getComponentID().toStdString());
+//    std::cout << "PlaylistComponent::buttonClicked trackTitles id: " << trackTitles[id] << std::endl;
+//    std::cout << "URL:" << URL{trackVector[id].file}.toString(false) << std::endl;
         
 
-    if (player->isPlaying()) {
-            // 停止播放器
-            player->stop();
-           
-            // 设置按钮文本为 "Play"
-            button->setButtonText("Play");
-        } else {
-            // 如果播放器没有播放，则开始播放
-            player->loadURL(URL{trackVector[id].file});
-            player->start();
-
-            // 设置按钮文本为 "Stop"
-            button->setButtonText("Stop");
+//    if (player->isPlaying()) {
+//            // 停止播放器
+//            player->stop();
+//
+//            // 设置按钮文本为 "Play"
+//            button->setButtonText("Play");
+//        } else {
+//            // 如果播放器没有播放，则开始播放
+//            player->loadURL(URL{trackVector[id].file});
+//            player->start();
+//
+//            // 设置按钮文本为 "Stop"
+//            button->setButtonText("Stop");
+//        }
+    if (button == &playSequenceButton)
+        {
+            // 开始播放顺序
+            currentTrackIndex=0;
+            playList();
         }
+        else
+        {
+            int index = button->getComponentID().getIntValue();
+            currentTrackIndex=index;
+            if (index >= 0 && index < trackVector.size())
+            {
+//                player->loadURL(URL{trackVector[index].file});
+//                player->start();
+                playList();
+            }
+        }
+    
 }
 
 Component* PlaylistComponent::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) {
@@ -170,4 +194,28 @@ void PlaylistComponent::addTrackToList(std::vector<String> &trackTitles,const St
     trackVector.push_back(newTrackInfo);
     
     tableComponent.updateContent();
+}
+    
+    
+void PlaylistComponent::playList()
+{
+    while(currentTrackIndex < trackVector.size())
+    {
+        player->loadURL(URL{trackVector[currentTrackIndex].file});
+        player->start();
+        
+        
+        // 等待当前歌曲播放完成
+        while (player->isPlaying())
+        {
+            // 检查播放位置是否达到了文件末尾
+            if (player->getPositionRelative() ==1){
+                player->releaseResources();
+                break;
+            }
+        }
+
+        
+        ++currentTrackIndex;
+    }
 }

@@ -46,6 +46,10 @@ private:
     bool isInterestedInFileDrag(const StringArray &file) override;
     void filesDropped (const StringArray &files, int x, int y) override;
     
+    void playList();
+    int currentTrackIndex = 0; // 当前播放的曲目索引
+    TextButton playSequenceButton; // 顺序播放按钮
+    
     AudioFormatManager formatManager;
 
     DJAudioPlayer* player;
