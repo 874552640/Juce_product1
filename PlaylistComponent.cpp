@@ -53,8 +53,10 @@ PlaylistComponent::PlaylistComponent(DJAudioPlayer* _player,AudioFormatManager &
     
     
     addAndMakeVisible(playSequenceButton);
-    playSequenceButton.setButtonText("Play Sequence");
+    playSequenceButton.setButtonText("Play Sequence/Stop");
     playSequenceButton.addListener(this);
+    
+    
 }
 
 
@@ -129,19 +131,32 @@ void PlaylistComponent::buttonClicked(Button* button) {
 //        }
     if (button == &playSequenceButton)
         {
-            // 开始播放顺序
-            currentTrackIndex=0;
-            playList();
+            if(Timer::isTimerRunning()){
+                stopTimer();
+                player->stop();
+            }else{
+                // 开始播放顺序
+                currentTrackIndex=0;
+                startTimer(1000);
+            }
+            
+            
         }
         else
         {
+            stopTimer();
+            player->stop();
+            
             int index = button->getComponentID().getIntValue();
             currentTrackIndex=index;
             if (index >= 0 && index < trackVector.size())
             {
-//                player->loadURL(URL{trackVector[index].file});
-//                player->start();
-                playList();
+                player->loadURL(URL{trackVector[index].file});
+                player->start();
+//                playList();
+                
+                
+                    
             }
         }
     
@@ -197,25 +212,52 @@ void PlaylistComponent::addTrackToList(std::vector<String> &trackTitles,const St
 }
     
     
-void PlaylistComponent::playList()
-{
-    while(currentTrackIndex < trackVector.size())
-    {
-        player->loadURL(URL{trackVector[currentTrackIndex].file});
-        player->start();
-        
-        
-        // 等待当前歌曲播放完成
-        while (player->isPlaying())
-        {
-            // 检查播放位置是否达到了文件末尾
-            if (player->getPositionRelative() ==1){
-                player->releaseResources();
-                break;
-            }
-        }
+//void PlaylistComponent::playList()
+//{
+//    while(currentTrackIndex < trackVector.size())
+//    {
+//        player->loadURL(URL{trackVector[currentTrackIndex].file});
+//        player->start();
+//
+//
+//        // 等待当前歌曲播放完成
+//        while (player->isPlaying())
+//        {
+//            // 检查播放位置是否达到了文件末尾
+//            if (player->getPositionRelative() ==1){
+//
+//                player->releaseResources();
+//                break;
+//            }
+//
+//
+//        }
+//
+//
+//        ++currentTrackIndex;
+//    }
+//}
 
-        
-        ++currentTrackIndex;
+
+void PlaylistComponent::timerCallback()
+    {
+        // 如果当前歌曲正在播放，直接返回，等待播放完成
+        if (player->isPlaying())
+            return;
+
+        // 如果播放列表中还有歌曲
+        if (currentTrackIndex < trackVector.size())
+        {
+            // 加载并播放下一首歌曲
+            player->loadURL(URL{trackVector[currentTrackIndex].file});
+            player->start();
+
+            // 更新当前歌曲索引
+            ++currentTrackIndex;
+        }
+        else
+        {
+            // 播放列表已经播放完毕，停止定时器
+            stopTimer();
+        }
     }
-}

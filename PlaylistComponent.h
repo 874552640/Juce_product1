@@ -17,7 +17,7 @@
 //==============================================================================
 /*
 */
-class PlaylistComponent  : public juce::Component, public TableListBoxModel, public Button::Listener,public FileDragAndDropTarget
+class PlaylistComponent  : public juce::Component, public TableListBoxModel, public Button::Listener,public FileDragAndDropTarget,public Timer
 {
 public:
     PlaylistComponent(DJAudioPlayer* player,AudioFormatManager &formatManager);
@@ -33,6 +33,14 @@ public:
 
     void addTrackToList(std::vector<String> &trackTitles,const juce::String &fileName,const File &file);
     Component* refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) override;
+    
+    void playNextTrack();
+    
+    void transportSourceStopped()
+        {
+            // Logic to play the next track
+            playNextTrack();
+        }
 
 private:
     struct TrackInfo
@@ -50,9 +58,13 @@ private:
     int currentTrackIndex = 0; // 当前播放的曲目索引
     TextButton playSequenceButton; // 顺序播放按钮
     
+   
+    
     AudioFormatManager formatManager;
 
     DJAudioPlayer* player;
+    
+    void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 };
