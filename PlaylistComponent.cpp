@@ -151,9 +151,10 @@ void PlaylistComponent::buttonClicked(Button* button) {
             currentTrackIndex=index;
             if (index >= 0 && index < trackVector.size())
             {
-                player->loadURL(URL{trackVector[index].file});
-                player->start();
+//                player->loadURL(URL{trackVector[index].file});
+//                player->start();
 //                playList();
+                startTimer(1000);
                 
                 
                     
