@@ -52,7 +52,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     speedKnob.addListener(this);
     posSlider.addListener(this);
 
-
+    loadButton.setColour(TextButton::buttonColourId, Colours::yellow);
+    
     volumeKnob.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     volumeKnob.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     volumeKnob.setRange(0.0, 1.0, 0.01);
